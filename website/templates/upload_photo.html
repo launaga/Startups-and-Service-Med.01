@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthAI - AI-Powered X-Ray Diagnostics</title>
+    <script src="https://unpkg.com/lucide@latest"></script> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80') center/cover;
+            height: 600px;
+        }
+        .upload-area {
+            border: 2px dashed #CBD5E0;
+            background: #F7FAFC;
+        }
+        .medical-disclaimer {
+            background-color: #FFF9E5;
+            border-left: 4px solid #F6B73C;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i data-lucide="stethoscope" class="h-8 w-8 text-blue-600"></i>
+                    <span class="ml-2 text-xl font-bold">HealthAI</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="showPage('home')" class="px-3 py-2 text-gray-600 hover:text-gray-900" id="homeBtn">Home</button>
+                    <button onclick="showPage('about')" class="px-3 py-2 text-gray-600 hover:text-gray-900" id="aboutBtn">About</button>
+                    <button onclick="showPage('investors')" class="px-3 py-2 text-gray-600 hover:text-gray-900" id="investorsBtn">Investors</button>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Contact Us</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="homePage" class="pt-16">
+        <!-- Hero Section -->
+        <div class="hero-section flex items-center">
+            <div class="max-w-7xl mx-auto px-4 text-center text-white">
+                <h1 class="text-5xl font-bold mb-6">AI-Powered X-Ray Diagnostics</h1>
+                <p class="text-xl mb-8">Revolutionizing healthcare with advanced machine learning for faster, more accurate diagnoses.</p>
+                <button class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700">
+                    Learn More →
+                </button>
+            </div>
+        </div>
+
+        <!-- X-Ray Analysis Section -->
+        <div class="max-w-3xl mx-auto px-4 py-16">
+            <h2 class="text-2xl font-bold mb-6">X-Ray Analysis</h2>
+            
+            <!-- Form for uploading X-ray image -->
+            <form action="{% url 'testing' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="upload-area p-8 rounded-lg text-center">
+                    <i data-lucide="upload-cloud" class="h-12 w-12 mx-auto mb-4 text-gray-400"></i>
+                    <p class="text-gray-600 mb-4">Upload your X-ray image</p>
+                    <input type="file" accept="image/*" class="hidden" id="fileInput" name="image">
+                    <label for="fileInput" class="bg-gray-200 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-300 cursor-pointer">
+                        Choose File
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full mt-4 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700">
+                    Analyze Image
+                </button>
+            </form>
+
+            {% if result_message %}
+                <div class="mt-6 text-center text-xl text-blue-600">
+                    <p>{{ result_message }}</p>
+                </div>
+            {% endif %}
+
+            <div class="medical-disclaimer mt-6 p-4 text-sm text-amber-800">
+                <strong>Medical Disclaimer:</strong>
+                <p>This AI-powered analysis tool is for educational and preliminary screening purposes only. It is not intended to replace professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="bg-gray-50 py-16">
+            <div class="max-w-7xl mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">Why Choose HealthAI?</h2>
+                <p class="text-center text-gray-600 mb-12">Transforming healthcare through innovation and accessibility</p>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <i data-lucide="brain" class="h-12 w-12 mx-auto mb-4 text-blue-600"></i>
+                        <h3 class="text-xl font-semibold mb-2">Advanced AI Technology</h3>
+                        <p class="text-gray-600">State-of-the-art machine learning algorithms for accurate disease detection</p>
+                    </div>
+                    <div class="text-center">
+                        <i data-lucide="globe" class="h-12 w-12 mx-auto mb-4 text-blue-600"></i>
+                        <h3 class="text-xl font-semibold mb-2">Global Accessibility</h3>
+                        <p class="text-gray-600">Making advanced diagnostics available to healthcare facilities worldwide</p>
+                    </div>
+                    <div class="text-center">
+                        <i data-lucide="clock" class="h-12 w-12 mx-auto mb-4 text-blue-600"></i>
+                        <h3 class="text-xl font-semibold mb-2">Rapid Results</h3>
+                        <p class="text-gray-600">Quick and accurate diagnoses to improve patient care efficiency</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <h2 class="text-3xl font-bold text-center mb-12">Trusted by Leading Healthcare Providers</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-gray-600 italic mb-4">"HealthAI has revolutionized our diagnostic process, reducing wait times by 60% while maintaining exceptional accuracy."</p>
+                    <div>
+                        <p class="font-semibold">Dr. Sarah Chen</p>
+                        <p class="text-gray-600">Chief of Radiology</p>
+                        <p class="text-blue-600">Metropolitan General Hospital</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-gray-600 italic mb-4">"In our rural clinic, access to specialists was always a challenge. HealthAI has been a game-changer for our community."</p>
+                    <div>
+                        <p class="font-semibold">Dr. James Mwangi</p>
+                        <p class="text-gray-600">Medical Director</p>
+                        <p class="text-blue-600">Kibera Community Health Center</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- About Page -->
+    <div id="aboutPage" class="hidden pt-16">
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <div class="text-center mb-16">
+                <h1 class="text-4xl font-bold mb-6">About Us</h1>
+                <p class="text-xl text-gray-600">Revolutionizing healthcare through artificial intelligence</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-8">
+                <div class="flex flex-col md:flex-row items-center">
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a" alt="Dev R Gupta" 
+                        class="w-64 h-64 rounded-full object-cover mb-8 md:mb-0 md:mr-8">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4">Dev R. Gupta</h2>
+                        <h3 class="text-xl text-gray-600 mb-4">Founder & CEO</h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Dev R. Gupta is a passionate high school student at the prestigious Horace Mann School, driven by a vision to leverage technology for global healthcare improvement. Born in India and having lived in Singapore and the United States, Dev's multicultural background has shaped his unique perspective on global healthcare disparities.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            As the founder of Sow4future, a financial literacy initiative, Dev has already demonstrated his commitment to empowering others through education. His completion of the rigorous Kumon program further underscores his dedication to academic excellence and continuous learning.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed">
+                            Inspired by his Indian heritage and motivated by the healthcare accessibility challenges he observed across different countries, Dev developed an innovative AI-powered diagnostic tool. This groundbreaking project uses advanced machine learning algorithms to analyze X-ray images, capable of detecting a range of conditions from pneumonia to fractures.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Investors Page -->
+    <div id="investorsPage" class="hidden pt-16">
+        <div class="bg-gray-900 text-white py-16">
+            <div class="max-w-7xl mx-auto px-4">
+                <h1 class="text-4xl font-bold mb-6">Investor Relations</h1>
+                <p class="text-xl">Join us in revolutionizing healthcare diagnostics and creating global impact through AI technology.</p>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="max-w-7xl mx-auto px-4 -mt-8">
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-gray-600 text-sm">Healthcare Facilities</p>
+                    <h3 class="text-3xl font-bold mb-2">500+</h3>
+                    <p class="text-green-500">+45% YoY</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-gray-600 text-sm">Diagnostic Accuracy</p>
+                    <h3 class="text-3xl font-bold mb-2">99.2%</h3>
+                    <p class="text-green-500">+2.5% YoY</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-gray-600 text-sm">Cost Reduction</p>
+                    <h3 class="text-3xl font-bold mb-2">60%</h3>
+                    <p class="text-green-500">Per diagnosis</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-gray-600 text-sm">Market Growth</p>
+                    <h3 class="text-3xl font-bold mb-2">125%</h3>
+                    <p class="text-green-500">Projected 2024</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Overview -->
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <h2 class="text-3xl font-bold mb-12">Financial Overview</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-6">Revenue Model</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <div class="h-2 w-2 bg-blue-600 rounded-full mr-3"></div>
+                            Per-scan licensing model
+                        </li>
+                        <li class="flex items-center">
+                            <div class="h-2 w-2 bg-blue-600 rounded-full mr-3"></div>
+                            Enterprise subscriptions
+                        </li>
+                        <li class="flex items-center">
+                            <div class="h-2 w-2 bg-blue-600 rounded-full mr-3"></div>
+                            API access for integration
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-6">Market Opportunity</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <div class="h-2 w-2 bg-blue-600 rounded-full mr-3"></div>
+                            $50B+ Global diagnostic imaging market
+                        </li>
+                        <li class="flex items-center">
+                            <div class="h-2 w-2 bg-blue-600 rounded-full mr-3"></div>
+                            Growing at 7% CAGR
+                        </li>
+                        <li class="flex items-center">
+                            <div class="h-2 w-2 bg-blue-600 rounded-full mr-3"></div>
+                            Expanding telemedicine sector
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investment CTA -->
+        <div class="bg-gray-50 py-16 text-center">
+            <h2 class="text-3xl font-bold mb-6">Interested in Investing?</h2>
+            <p class="text-gray-600 mb-8">Contact our investor relations team to learn more about investment opportunities.</p>
+            <button class="bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700">
+                Request Investor Package
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">HealthAI</h3>
+                    <p class="text-gray-400">Revolutionizing healthcare diagnostics through AI technology.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact</h3>
+                    <p class="text-gray-400">devrgupta01@gmail.com</p>
+                    <p class="text-gray-400">+1 (555) 123-4567</p>
+                    <p class="text-gray-400">San Francisco, CA</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Legal</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                © 2024 HealthAI. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('aboutPage').classList.add('hidden');
+            document.getElementById('investorsPage').classList.add('hidden');
+            
+            // Show selected page
+            document.getElementById(pageId + 'Page').classList.remove('hidden');
+            
+            // Reset all button colors
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('text-blue-600');
+                btn.classList.add('text-gray-600');
+            });
+            
+            // Highlight active button
+            document.getElementById(pageId + 'Btn').classList.remove('text-gray-600');
+            document.getElementById(pageId + 'Btn').classList.add('text-blue-600');
+        }
+    </script>
+    </body>
+    </html>
